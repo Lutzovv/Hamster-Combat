@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:HamsterCombat.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:HamsterCombat.Views"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="HamsterCombat.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="HamsterCombat">
+		<views:MainView />
+
+	<!--<Window.Styles>
+		<StyleInclude Source="/Styles/Dark/Navigation.axaml"/>
+		<Style Selector="ListBoxItem:selected TextBlock">
+			<Setter Property="Foreground" Value="White"/>
+		</Style>
+	</Window.Styles>
+
+	<Grid RowDefinitions="*,Auto" Classes="Navigation">
+		<ContentControl Grid.Row="0" Content="{Binding SelectedPageItem}"/>
+
+
+		<Border Grid.Row="1" Classes="MenuList">
+			<ListBox ItemsSource="{Binding PaneItems}"
+					 SelectedItem="{Binding SelectedPageItem}"
+					 SelectionMode="Single"
+					 Background="Transparent"
+					 BorderThickness="0">
+
+				<ListBox.ItemsPanel>
+					<ItemsPanelTemplate>
+						<UniformGrid Rows="1" Classes="Panel">
+							<StackPanel Spacing="10"/>
+						</UniformGrid>
+					</ItemsPanelTemplate>
+				</ListBox.ItemsPanel>
+
+
+				<ListBox.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Classes="Item">
+							<Image Source="{Binding Icon}"/>
+							<TextBlock Text="{Binding Title}"/>
+						</StackPanel>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</Border>
+	</Grid>-->
+</Window>

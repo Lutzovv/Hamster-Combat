@@ -1,0 +1,68 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HamsterCombat.Views.Pages.ClickerView"
+			 xmlns:vm="using:HamsterCombat.ViewModels.Pages"
+			 x:DataType="vm:ClickerViewModel">
+
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Dark/Clicker.axaml"/>
+	</UserControl.Styles>
+
+	<Grid RowDefinitions="0.09*, *" ShowGridLines="True">
+		<Grid Classes="InfoPanel"
+			  ColumnDefinitions="*,*,*" Grid.Row="0">
+
+
+			<!-- Верхняя панель -->
+			<Border Grid.Column="0">
+				<StackPanel Classes="ProfitPerClick">
+
+					<TextBlock>Прибыль за клик</TextBlock>
+					<StackPanel Orientation="Horizontal">
+						<Image Source="../../Assets/gold-coin.png"/>
+						<TextBlock>1</TextBlock>
+
+					</StackPanel>
+
+				</StackPanel>
+			</Border>
+
+
+			<Border Grid.Column="1">
+				<StackPanel Classes="ClickPerSecond">
+					<TextBlock Classes="ClickPerSecond">CPS</TextBlock>
+					<TextBlock Text="0"/>
+				</StackPanel>
+			</Border>
+
+
+			<Border Grid.Column="2">
+				<StackPanel Classes="ProfitPerHour">
+					<TextBlock>Прибыль в час</TextBlock>
+					<StackPanel Orientation="Horizontal">
+						<Image Source="../../Assets/gold-coin.png"/>
+						<TextBlock Text="0"/>
+					</StackPanel>
+				</StackPanel>
+			</Border>
+
+		</Grid>
+
+		<!-- Кнопка и баланс -->
+		<StackPanel Grid.Row="1">
+			<StackPanel Orientation="Horizontal" Classes="Balance">
+				<Image Source="../../Assets/gold-coin.png"/>
+				<TextBlock Text="{Binding Balance}"/>
+			</StackPanel>
+
+
+			<Button Classes="GameButton"
+					Command="{Binding ClickCommand}"/>
+		</StackPanel>
+
+	</Grid>
+
+</UserControl>
