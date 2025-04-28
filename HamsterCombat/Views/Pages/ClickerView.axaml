@@ -11,7 +11,7 @@
 		<StyleInclude Source="/Styles/Dark/Clicker.axaml"/>
 	</UserControl.Styles>
 
-	<Grid RowDefinitions="0.09*, *" ShowGridLines="True">
+	<Grid RowDefinitions="0.09*, *">
 		<Grid Classes="InfoPanel"
 			  ColumnDefinitions="*,*,*" Grid.Row="0">
 
@@ -34,7 +34,7 @@
 			<Border Grid.Column="1">
 				<StackPanel Classes="ClickPerSecond">
 					<TextBlock Classes="ClickPerSecond">CPS</TextBlock>
-					<TextBlock Text="0"/>
+					<TextBlock Text="0" HorizontalAlignment="Center"/>
 				</StackPanel>
 			</Border>
 
