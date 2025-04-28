@@ -1,5 +1,7 @@
-﻿using HamsterCombat.Models;
+﻿using HamsterCombat.Database;
+using HamsterCombat.Models;
 using ReactiveUI;
+using Splat;
 using System.Data.Common;
 using System.Reactive;
 
@@ -7,7 +9,7 @@ namespace HamsterCombat.ViewModels.Pages;
 
 public class ClickerViewModel : PageBaseModel
 {
-    private readonly Player _player = new Player();
+    private readonly IDatabaseService? _db;
 
     private int _balance;
     public int Balance
@@ -21,16 +23,15 @@ public class ClickerViewModel : PageBaseModel
     public ClickerViewModel()
     {
         Title = "Кликер";
+        _db = Locator.Current.GetService<IDatabaseService>();
 
-        // Инициализируем баланс из Player
-        _balance = _player.Balance_;
-
+        _balance = _db.LoadPlayerInfo();
         ClickCommand = ReactiveCommand.Create(Add);
     }
 
     private void Add()
     {
         Balance++;
-        _player.Balance_ = Balance;
+        _db?.UpdateBalance(Balance);
     }
 }

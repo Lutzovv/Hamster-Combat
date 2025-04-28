@@ -1,22 +1,65 @@
 ﻿using Microsoft.Data.Sqlite;
+using System;
+using System.Data.Common;
+using System.IO;
 
-namespace HamsterCombat.Database
+namespace HamsterCombat.Database;
+
+public class DatabaseService : IDatabaseService
 {
-    public class Database
+    private string? db_path;
+
+    public DatabaseService()
     {
-        private string db_path = "./db.sqlite";
-        
-        public void UpdateBalance(int balance)
+        db_path = GetDatabasePath("db.sqlite");
+    }
+
+    public int LoadPlayerInfo()
+    {
+        using var connection = new SqliteConnection($"Data Source={db_path}");
+        connection.Open();
+
+        const string sql = "SELECT balance FROM player_info WHERE id = 0";
+        using var command = new SqliteCommand(sql, connection);
+
+        return Convert.ToInt32(command.ExecuteScalar() ?? 0);
+    }
+
+    public void UpdateBalance(int balance)
+    {
+        string sqlExpression = $"UPDATE player_info SET balance={balance} WHERE id=0";
+        using (var connection = new SqliteConnection($"Data Source={db_path}"))
         {
-            string sqlExpression = $"UPDATE player_info SET balance={balance} WHERE id=0";
-            using (var connection = new SqliteConnection($"Data Source={db_path}"))
-            {
-                connection.Open();
+            connection.Open();
 
-                SqliteCommand command = new SqliteCommand(sqlExpression, connection);
+            SqliteCommand command = new SqliteCommand(sqlExpression, connection);
 
-                int number = command.ExecuteNonQuery();
-            }
+            int number = command.ExecuteNonQuery();
         }
+    }
+
+
+    private string GetDatabasePath(string filename)
+    {
+        if (OperatingSystem.IsAndroid())
+        {
+            string personalPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+
+            string databaseDir = Path.Combine(personalPath, "Database");
+            if (!Directory.Exists(databaseDir))
+            {
+                Directory.CreateDirectory(databaseDir);
+            }
+
+            return Path.Combine(databaseDir, filename);
+        }
+
+        string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        string appDir = Path.Combine(appDataPath, "HamsterCombat");
+        if (!Directory.Exists(appDir))
+        {
+            Directory.CreateDirectory(appDir);
+        }
+        return Path.Combine(appDir, filename);
     }
 }
