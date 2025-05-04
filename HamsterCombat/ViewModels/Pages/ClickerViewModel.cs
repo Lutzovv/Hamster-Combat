@@ -1,8 +1,10 @@
-﻿using HamsterCombat.Database;
-using HamsterCombat.Models;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Platform;
+using HamsterCombat.Database;
 using ReactiveUI;
 using Splat;
-using System.Data.Common;
 using System.Reactive;
 
 namespace HamsterCombat.ViewModels.Pages;
@@ -24,7 +26,6 @@ public class ClickerViewModel : PageBaseModel
     {
         Title = "Кликер";
         _db = Locator.Current.GetService<IDatabaseService>();
-
         _balance = _db.LoadPlayerInfo();
         ClickCommand = ReactiveCommand.Create(Add);
     }
@@ -34,4 +35,5 @@ public class ClickerViewModel : PageBaseModel
         Balance++;
         _db?.UpdateBalance(Balance);
     }
+
 }

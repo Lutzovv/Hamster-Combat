@@ -17,7 +17,6 @@ public partial class App : Application
 
     public override void RegisterServices()
     {
-        // Регистрация сервисов DI
         Locator.CurrentMutable.Register(() => new DatabaseService(), typeof(IDatabaseService));
 
         base.RegisterServices();
