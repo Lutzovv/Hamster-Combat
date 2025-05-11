@@ -10,7 +10,7 @@
 	<Grid RowDefinitions="0.2*, *" ShowGridLines="True">
 		<ScrollViewer Grid.Row="1"
 					  VerticalScrollBarVisibility="Visible">
-			<TextBlock>123</TextBlock>
+			<TextBlock Text="{Binding Balance}"/>
 		</ScrollViewer>
 	</Grid>
 </UserControl>

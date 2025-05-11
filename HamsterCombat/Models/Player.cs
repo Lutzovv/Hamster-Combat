@@ -1,14 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
-namespace HamsterCombat.Models
+namespace HamsterCombat.Models;
+
+public class Player : ReactiveObject
 {
-    public class Player
+    //public string? Name { get; set; }
+    //public int Balance { get; set; }
+    //public int ClickPower { get; set; }
+
+    private string? name_;
+    private int balance_;
+
+
+    public string? Name
     {
-        public string? Name { get; set; }
-        public int Balance_ { get; set; }
+        get => name_;
+        set => this.RaiseAndSetIfChanged(ref name_, value);
     }
+
+
+    [Reactive] public int Balance { get; set; }
 }

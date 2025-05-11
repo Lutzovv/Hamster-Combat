@@ -1,7 +1,10 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using HamsterCombat.Models;
+using Microsoft.Data.Sqlite;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using System.Xml.Linq;
 
 namespace HamsterCombat.Database;
 
@@ -30,6 +33,17 @@ public class DatabaseService : IDatabaseService
                     name TEXT,
                     balance INTEGER)";
             command.ExecuteNonQuery();
+            command.CommandText = @"
+                CREATE TABLE IF NOT EXISTS products (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    name TEXT,
+                    price REAL,
+                    ratio REAL,
+                    imageURL TEXT,
+                    level INTEGER
+                )";
+            command.ExecuteNonQuery();
+
 
             command.CommandText = "SELECT * FROM player_info WHERE id = 0";
             if (command.ExecuteScalar() == null )
@@ -38,36 +52,58 @@ public class DatabaseService : IDatabaseService
                 command.ExecuteNonQuery();
             }
         }
-
-        //using var connection = new SqliteConnection($"Data Source={db_path}");
-        //connection.Open();
-        //string sql = @"
-        //    CREATE TABLE IF NOT EXISTS player_info (
-        //        id integer,
-        //        name TEXT,
-        //        balance INTEGER";
-        //var createDB = new SqliteCommand( sql, connection );
-
-        //sql = "SELECT * FROM player_info WHERE id = 0";
-
-        //using var command = new SqliteCommand( sql, connection );
-        //if (command.ExecuteScalar() == null)
-        //{
-        //    sql = "INSERT INTO player_info "
-        //}
     }
 
 
-    public int LoadPlayerInfo()
+    public void LoadPlayerInfo()
     {
         using var connection = new SqliteConnection($"Data Source={db_path}");
         connection.Open();
 
-        const string sql = "SELECT balance FROM player_info WHERE id = 0";
+        const string sql = "SELECT * FROM player_info WHERE id = 0";
         using var command = new SqliteCommand(sql, connection);
+        var reader = command.ExecuteReader();
 
-        return Convert.ToInt32(command.ExecuteScalar() ?? 0);
+        if (reader.Read())
+        { 
+            int id = reader.GetInt32(0);
+            string name = reader.GetString(1);
+            int balance = reader.GetInt32(2);
+        }
     }
+
+
+    public List<Product> LoadProducts()
+    {
+        List<Product> products = new List<Product>();
+
+        using var connection = new SqliteConnection($"Data Source={db_path}");
+        connection.Open();
+
+        const string sql = "SELECT * FROM products";
+        var command = new SqliteCommand(sql, connection);
+
+        using ( var reader = command.ExecuteReader())
+        {
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    int id = reader.GetInt32(0);
+                    string name = reader.GetString(1);
+                    float price = reader.GetFloat(2);
+                    float ratio = reader.GetFloat(3);
+                    string imageURL = reader.GetString(4);
+                    int level = reader.GetInt32(5);
+
+                    products.Add(new Product(id, name, price, ratio, imageURL, level));
+                }
+            }
+        }
+
+        return products;
+    }
+
 
     public void UpdateBalance(int balance)
     {
@@ -83,30 +119,8 @@ public class DatabaseService : IDatabaseService
     }
 
 
-    public string GetDatabasePath(string name)
+    private string GetDatabasePath(string name)
     {
-        //if (OperatingSystem.IsAndroid())
-        //{
-        //    string personalPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-
-        //    string databaseDir = Path.Combine(personalPath, "Database");
-        //    //if (!Directory.Exists(databaseDir))
-        //    //{
-        //    //    Directory.CreateDirectory(databaseDir);
-        //    //}
-
-        //    return Path.Combine(databaseDir, name);
-        //}
-        
-        //string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        //string appDir = Path.Combine(appDataPath, "HamsterCombat");
-        //if (!Directory.Exists(appDir))
-        //{
-        //    Directory.CreateDirectory(appDir);
-        //}
-        //return Path.Combine(appDir, name);
-
-        //string appPath = Environment.SpecialFolder.LocalApplicationData.ToString();
         var dbPath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), name);
         return dbPath;

@@ -2,12 +2,15 @@
 using System.Collections.ObjectModel;
 using ReactiveUI.Fody.Helpers;
 using HamsterCombat.Database;
+using HamsterCombat.Models;
+using ReactiveUI;
 
 namespace HamsterCombat.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
     private readonly IDatabaseService _dbService;
+
     public ObservableCollection<PageBaseModel> PaneItems { get; set; }
     [Reactive] public PageBaseModel SelectedPageItem { get; set; }
 

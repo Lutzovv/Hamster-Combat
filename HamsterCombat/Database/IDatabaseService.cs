@@ -1,10 +1,11 @@
 ﻿using HamsterCombat.Models;
+using System.Collections.Generic;
 
 namespace HamsterCombat.Database;
 
 public interface IDatabaseService
 {
-    int LoadPlayerInfo();
+    void LoadPlayerInfo();
+    List<Product> LoadProducts();
     void UpdateBalance(int balance);
-    string GetDatabasePath(string name);
 }

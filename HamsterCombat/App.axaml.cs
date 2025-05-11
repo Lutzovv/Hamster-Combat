@@ -2,8 +2,11 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using HamsterCombat.Database;
+using HamsterCombat.Models;
 using HamsterCombat.ViewModels;
+using HamsterCombat.ViewModels.Pages;
 using HamsterCombat.Views;
+using Microsoft.Extensions.DependencyInjection;
 using Splat;
 
 namespace HamsterCombat;
@@ -43,5 +46,4 @@ public partial class App : Application
 
         base.OnFrameworkInitializationCompleted();
     }
-
 }
