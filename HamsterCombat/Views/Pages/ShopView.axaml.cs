@@ -9,5 +9,6 @@ public partial class ShopView : UserControl
     public ShopView()
     {
         InitializeComponent();
+        this.Name = "ShopControl";
     }
 }

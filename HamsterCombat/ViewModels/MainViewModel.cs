@@ -14,15 +14,15 @@ public class MainViewModel : ViewModelBase
     public ObservableCollection<PageBaseModel> PaneItems { get; set; }
     [Reactive] public PageBaseModel SelectedPageItem { get; set; }
 
-    public MainViewModel(ref IDatabaseService dbService)
+    public MainViewModel(IDatabaseService dbService)
     {
         _dbService = dbService;
         PaneItems = new ObservableCollection<PageBaseModel>
         {
-            new ClickerViewModel(),
-            new ShopViewModel(),
-            new CasinoViewModel(),
-            new ProfileViewModel()
+            new ClickerViewModel(_dbService),
+            new ShopViewModel(_dbService),
+            //new CasinoViewModel(),
+            //new ProfileViewModel()
         };
 
         SelectedPageItem = PaneItems[0];

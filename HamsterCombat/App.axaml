@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:HamsterCombat"
              x:Class="HamsterCombat.App"
+			 xmlns:converters="using:HamsterCombat.Converters"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 		
@@ -12,4 +13,10 @@
     <Application.Styles>
         <FluentTheme />
     </Application.Styles>
+
+	<Application.Resources>
+		<ResourceDictionary>
+			<converters:PriceConverter x:Key="PriceConverter"/>
+		</ResourceDictionary>
+	</Application.Resources>
 </Application>

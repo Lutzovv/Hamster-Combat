@@ -2,15 +2,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:HamsterCombat.ViewModels.Pages"
+             xmlns:converters="using:HamsterCombat.Converters"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
              x:Class="HamsterCombat.Views.Pages.ShopView"
-			 xmlns:vm="using:HamsterCombat.ViewModels.Pages"
-			 x:DataType="vm:ShopViewModel">
-	
-	<Grid RowDefinitions="0.2*, *" ShowGridLines="True">
-		<ScrollViewer Grid.Row="1"
-					  VerticalScrollBarVisibility="Visible">
-			<TextBlock Text="{Binding Balance}"/>
+             x:DataType="vm:ShopViewModel">
+
+	<UserControl.Styles>
+		<StyleInclude Source="/Styles/Dark/Shop.axaml"/>
+	</UserControl.Styles>
+
+	<Grid RowDefinitions="0.15*, *">
+		<StackPanel Grid.Row="0">
+			<StackPanel Orientation="Horizontal" Classes="Balance">
+				<Image Source="../../Assets/gold-coin.png"/>
+				<TextBlock Text="{Binding Balance}"/>
+			</StackPanel>
+		</StackPanel>
+
+		<ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+			<ItemsControl ItemsSource="{Binding Products}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Horizontal"
+                                  HorizontalAlignment="Center"
+                                  Width="800"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<Border Classes="ProductCard" Width="300" Margin="10">
+							<StackPanel>
+								<Image Source="{Binding IconURL}" Width="100" Height="100"/>
+								<TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
+								<TextBlock Text="{Binding Level, StringFormat='Level: {0}'}"
+                                           HorizontalAlignment="Center"/>
+								<!--<Button Content="{Binding ., Converter={StaticResource PriceConverter}}"
+                                        Command="{Binding #ShopControl.DataContext.BuyCommand}"
+                                        CommandParameter="{Binding}"
+                                        Margin="0,10"/>-->
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 		</ScrollViewer>
 	</Grid>
 </UserControl>

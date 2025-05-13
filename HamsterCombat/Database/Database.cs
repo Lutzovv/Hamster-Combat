@@ -11,11 +11,16 @@ namespace HamsterCombat.Database;
 public class DatabaseService : IDatabaseService
 {
     private string? db_path;
+    private int _currentBalance;
+
+    public int CurrentBalance => _currentBalance;
+    public event Action<int>? BalanceChanged;
 
     public DatabaseService()
     {
         db_path = GetDatabasePath("db.sqlite");
         CreateDB();
+        LoadPlayerInfo();
     }
 
 
@@ -65,10 +70,9 @@ public class DatabaseService : IDatabaseService
         var reader = command.ExecuteReader();
 
         if (reader.Read())
-        { 
-            int id = reader.GetInt32(0);
-            string name = reader.GetString(1);
-            int balance = reader.GetInt32(2);
+        {
+            _currentBalance = reader.GetInt32(2);
+            BalanceChanged?.Invoke(_currentBalance);
         }
     }
 
@@ -93,7 +97,7 @@ public class DatabaseService : IDatabaseService
                     string name = reader.GetString(1);
                     float price = reader.GetFloat(2);
                     float ratio = reader.GetFloat(3);
-                    string imageURL = reader.GetString(4);
+                    string imageURL = "D:\\code\\projects\\cs\\Avalonia\\HamsterCombat\\HamsterCombat\\Assets\\" + reader.GetString(4);
                     int level = reader.GetInt32(5);
 
                     products.Add(new Product(id, name, price, ratio, imageURL, level));
@@ -107,6 +111,8 @@ public class DatabaseService : IDatabaseService
 
     public void UpdateBalance(int balance)
     {
+        _currentBalance = balance;
+
         string sqlExpression = $"UPDATE player_info SET balance={balance} WHERE id=0";
         using (var connection = new SqliteConnection($"Data Source={db_path}"))
         {
@@ -116,6 +122,8 @@ public class DatabaseService : IDatabaseService
 
             int number = command.ExecuteNonQuery();
         }
+
+        BalanceChanged?.Invoke(balance);
     }
 
 

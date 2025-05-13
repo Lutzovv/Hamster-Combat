@@ -2,6 +2,7 @@
 using HamsterCombat.Models;
 using ReactiveUI;
 using Splat;
+using System;
 using System.Reactive;
 
 namespace HamsterCombat.ViewModels.Pages;
@@ -10,26 +11,25 @@ public class ClickerViewModel : PageBaseModel
 {
     private readonly IDatabaseService? _db;
 
-    private int _balance;
-    public int Balance
-    {
-        get => _balance;
-        set => this.RaiseAndSetIfChanged(ref _balance, value);
-    }
+    public int Balance => _db.CurrentBalance;
 
     public ReactiveCommand<Unit, Unit> ClickCommand { get; }
 
-    public ClickerViewModel()
+    public ClickerViewModel(IDatabaseService dbService)
     {
         Title = "Кликер";
-        _db = Locator.Current.GetService<IDatabaseService>();
+        _db = dbService;
         ClickCommand = ReactiveCommand.Create(Add);
+
+        _db.BalanceChanged += newBalance => this.RaisePropertyChanged(nameof(Balance));
     }
 
     private void Add()
     {
-        Balance++;
-        _db?.UpdateBalance(Balance);
+        if (_db != null)
+        {
+            _db.UpdateBalance(_db.CurrentBalance + 1);
+        }
     }
 
 }
